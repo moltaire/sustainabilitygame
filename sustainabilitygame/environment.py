@@ -2,10 +2,18 @@ import numpy as np
 
 
 class Environment(object):
-    def __init__(self, label="", initial_state=1):
+    def __init__(
+        self,
+        label="",
+        initial_state=1,
+        reward_factors={"sustainable": 0.01, "exploit": 0.05, "restore": 0},
+        impact_factors={"sustainable": 1.0, "exploit": 0.999, "restore": 1.01},
+    ):
         self.label = label
         self.initial_state = initial_state
         self.state = initial_state
+        self.reward_factors = reward_factors
+        self.impact_factors = impact_factors
         self.state_history = [initial_state]
         self.action_history = []
 
@@ -20,20 +28,8 @@ class Environment(object):
         """
         self.action_history.append(action)
 
-        if action == "sustainable":
-            self.state *= 1
-            self.state_history.append(self.state)
+        self.state *= self.impact_factors[action]
+        self.state = np.clip(self.state, 0, 1)
+        self.state_history.append(self.state)
 
-            return self.state * 0.05
-
-        elif action == "unsustainable":
-            self.state *= 0.99
-            self.state_history.append(self.state)
-
-            return self.state * 0.1
-
-        elif action == "repair":
-            self.state = np.min([self.state * 1.01, 1])
-            self.state_history.append(self.state)
-
-            return 0
+        return self.state * self.reward_factors[action]
