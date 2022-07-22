@@ -34,5 +34,6 @@ class Environment(object):
 
         elif action == "repair":
             self.state = np.min([self.state * 1.01, 1])
+            self.state_history.append(self.state)
 
             return 0
