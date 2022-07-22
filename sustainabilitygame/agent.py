@@ -30,15 +30,18 @@ class SustainableAgent(Agent):
         super().__init__(id, endowment)
 
     def select_action(self, environment):
-        action = np.random.choice(["sustainable", "unsustainable", "repair"],
-         p=[0.8, 0.1, 0.1])
+        action = np.random.choice(
+            ["sustainable", "unsustainable", "repair"], p=[0.8, 0.1, 0.1]
+        )
         return action
+
 
 class UnsustainableAgent(Agent):
     def __init__(self, id="", endowment=0):
         super().__init__(id, endowment)
 
     def select_action(self, environment):
-        action = np.random.choice(["sustainable", "unsustainable", "repair"],
-         p=[0.1, 0.9, 0.0])
+        action = np.random.choice(
+            ["sustainable", "unsustainable", "repair"], p=[0.1, 0.9, 0.0]
+        )
         return action
