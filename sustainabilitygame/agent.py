@@ -12,6 +12,8 @@ class Agent(object):
         self.endowment = endowment
         self.points = endowment
         self.p_action = p_action
+        self.action_history = []
+        self.points_history = [endowment]
 
     def __repr__(self):
         return f"Agent {self.id}\n  Points: {self.points}"
@@ -23,7 +25,9 @@ class Agent(object):
     def act(self, action, environment):
         """Let the agent take an action in their environment."""
         outcome = environment.react(action)
+        self.action_history.append(action)
         self.points += outcome
+        self.points_history.append(self.points)
 
     def select_action(self, environment=None):
         action = np.random.choice(
